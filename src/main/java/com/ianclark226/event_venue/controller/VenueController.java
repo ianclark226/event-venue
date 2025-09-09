@@ -103,6 +103,7 @@ public class VenueController {
         }).orElseThrow(() -> new ResourceNotFoundException("Venue not found"));
     }
 
+    @GetMapping("/available-venues")
     public ResponseEntity <List<VenueResponse>> getAvailableVenues(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                    @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                                                    @RequestParam("venueType") String venueType) throws SQLException {
