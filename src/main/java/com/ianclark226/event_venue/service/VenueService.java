@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,6 +89,11 @@ public class VenueService implements IVenueService {
     @Override
     public Optional<Venue> getVenueById(Long venueId) {
         return Optional.of(venueRepository.findById(venueId).get());
+    }
+
+    @Override
+    public List<Venue> getAvailableVenues(LocalDate startDate, LocalDate endDate, String venueType) {
+        return venueRepository.findAvailableVenuesByDateAndType(startDate, endDate, venueType);
     }
 
 }

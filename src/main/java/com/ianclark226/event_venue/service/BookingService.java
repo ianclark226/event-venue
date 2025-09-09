@@ -1,6 +1,7 @@
 package com.ianclark226.event_venue.service;
 
 import com.ianclark226.event_venue.exception.InvalidBookingRequestException;
+import com.ianclark226.event_venue.exception.ResourceNotFoundException;
 import com.ianclark226.event_venue.model.BookedVenue;
 import com.ianclark226.event_venue.model.Venue;
 import com.ianclark226.event_venue.repo.BookingRepository;
@@ -71,6 +72,7 @@ public class BookingService implements IBookingService{
 
     @Override
     public BookedVenue findByBookingConfirmationCode(String confirmationCode) {
-        return bookingRepository.findByBookingConfirmationCode(confirmationCode);
+        return bookingRepository.findByBookingConfirmationCode(confirmationCode)
+                .orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code :" + confirmationCode));
     }
 }

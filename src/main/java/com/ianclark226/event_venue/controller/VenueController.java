@@ -1,5 +1,6 @@
 package com.ianclark226.event_venue.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ianclark226.event_venue.exception.PhotoRetrievalException;
 import com.ianclark226.event_venue.exception.PhotoRetrievealException;
 import com.ianclark226.event_venue.exception.ResourceNotFoundException;
@@ -10,6 +11,7 @@ import com.ianclark226.event_venue.response.VenueResponse;
 import com.ianclark226.event_venue.service.BookingService;
 import com.ianclark226.event_venue.service.IVenueService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -98,6 +101,29 @@ public class VenueController {
             VenueResponse venueResponse = getVenueResponse(venue);
             return ResponseEntity.ok(Optional.of(venueResponse));
         }).orElseThrow(() -> new ResourceNotFoundException("Venue not found"));
+    }
+
+    public ResponseEntity <List<VenueResponse>> getAvailableVenues(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                   @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                                                   @RequestParam("venueType") String venueType) throws SQLException {
+
+        List<Venue> availableVenues = venueService.getAvailableVenues(startDate, endDate, venueType);
+        List<VenueResponse> venueResponses = new ArrayList<>();
+        for(Venue venue : availableVenues) {
+            byte[] photoBytes = venueService.getVenuePhotoByVenueId(venue.getId());
+            if(photoBytes != null && photoBytes.length > 0) {
+                String photoBase64 = org.apache.tomcat.util.codec.binary.Base64.encodeBase64String(photoBytes);
+                VenueResponse venueResponse = getVenueResponse(venue);
+                venueResponse.setPhoto(photoBase64);
+                venueResponses.add(venueResponse);
+            }
+        }
+
+        if(venueResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(venueResponses);
+        }
     }
 
     private VenueResponse getVenueResponse(Venue venue) {
