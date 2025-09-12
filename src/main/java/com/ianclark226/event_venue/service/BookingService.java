@@ -38,7 +38,7 @@ public class BookingService implements IBookingService{
             venue.addBooking(bookingRequest);
             bookingRepository.save(bookingRequest);
         } else {
-            throw new InvalidBookingRequestException("Sorry, This room is not available for the selected dates");
+            throw new InvalidBookingRequestException("Sorry, This venue is not available for the selected dates");
         }
         return bookingRequest.getBookingConfirmationCode();
     }
@@ -74,5 +74,10 @@ public class BookingService implements IBookingService{
     public BookedVenue findByBookingConfirmationCode(String confirmationCode) {
         return bookingRepository.findByBookingConfirmationCode(confirmationCode)
                 .orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code :" + confirmationCode));
+    }
+
+    @Override
+    public List<BookedVenue> getBookingsByUserEmail(String email) {
+        return bookingRepository.findByOrganizerEmail(email);
     }
 }

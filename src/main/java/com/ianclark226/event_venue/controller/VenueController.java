@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,15 +27,15 @@ import java.time.LocalDate;
 import java.util.*;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/venues")
+@CrossOrigin
 public class VenueController {
     private final IVenueService venueService;
     private final BookingService bookingService;
 
     @PostMapping("/add/new-venue")
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<VenueResponse> addNewVenue(
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("venueType") String venueType,
@@ -44,9 +45,6 @@ public class VenueController {
         VenueResponse response = new VenueResponse(savedVenue.getId(), savedVenue.getVenueType(), savedVenue.getVenuePrice());
 
         return ResponseEntity.ok(response);
-
-
-
     }
 
     @GetMapping("/venue/types")
@@ -73,12 +71,14 @@ public class VenueController {
     }
 
     @DeleteMapping("/delete/venue/{venueId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteVenue(@PathVariable Long venueId) {
         venueService.deleteVenue(venueId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/update/{venueId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<VenueResponse> updateVenue(Long venueId,
                                                      @RequestParam(required = false) String venueType,
                                                      @RequestParam(required = false) BigDecimal venuePrice,

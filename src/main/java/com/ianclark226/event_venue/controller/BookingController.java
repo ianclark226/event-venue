@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/bookings")
 public class BookingController {
@@ -49,6 +48,17 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
 
+    }
+
+    @GetMapping("/user/{email}/bookings")
+    public ResponseEntity<List<BookingResponse>> getBookingsByUserEmail(@PathVariable String email) {
+        List<BookedVenue> bookings = bookingService.getBookingsByUserEmail(email);
+        List<BookingResponse> bookingResponses = new ArrayList<>();
+        for(BookedVenue booking: bookings) {
+            BookingResponse bookingResponse =getBookingResponse(booking);
+            bookingResponses.add(bookingResponse);
+        }
+        return ResponseEntity.ok(bookingResponses);
     }
 
     private BookingResponse getBookingResponse(BookedVenue booking) {

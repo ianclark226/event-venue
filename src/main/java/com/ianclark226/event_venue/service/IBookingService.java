@@ -12,4 +12,6 @@ public interface IBookingService {
     List<BookedVenue> getAllBookings();
 
     BookedVenue findByBookingConfirmationCode(String confirmationCode);
+
+    List<BookedVenue> getBookingsByUserEmail(String email);
 }
