@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/event-venue-0.0.1-SNAPSHOT.jar event-venue.jar
-EXPOSE 8080
+COPY --from=build /target/event-venue-0.0.1-SNAPSHOT.jar event-venue-0.0.1-SNAPSHOT.jar.original
+EXPOSE 9192
 ENTRYPOINT ["java", "-jar", "event-venue.jar"]
