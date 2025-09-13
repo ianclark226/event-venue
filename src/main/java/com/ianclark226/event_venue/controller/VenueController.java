@@ -79,7 +79,7 @@ public class VenueController {
 
     @PutMapping("/update/{venueId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<VenueResponse> updateVenue(Long venueId,
+    public ResponseEntity<VenueResponse> updateVenue(@PathVariable Long venueId,
                                                      @RequestParam(required = false) String venueType,
                                                      @RequestParam(required = false) BigDecimal venuePrice,
                                                      @RequestParam(required = false) MultipartFile photo) throws IOException, SQLException {
