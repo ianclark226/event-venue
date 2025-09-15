@@ -37,7 +37,7 @@ public class BookingResponse {
     private int numOfChildren;
 
 
-    private int numOfTotalParticipates;
+    private int totalNumOfParticipates;
 
 
     private String bookingConfirmationCode;

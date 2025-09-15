@@ -38,7 +38,7 @@ public class BookedVenue {
     private int numOfChildren;
 
     @Column(name = "total_participates")
-    private int numOfTotalParticipates;
+    private int totalNumOfParticipates;
 
     @Column(name = "confirmation_Code")
     private String bookingConfirmationCode;
@@ -48,7 +48,7 @@ public class BookedVenue {
     private Venue venue;
 
     public void calculateTotalNumberOfParticipates() {
-        this.numOfTotalParticipates = this.numOfAdults + numOfChildren;
+        this.totalNumOfParticipates = this.numOfAdults + numOfChildren;
     }
 
     public void setNumOfAdults(int numOfAdults) {

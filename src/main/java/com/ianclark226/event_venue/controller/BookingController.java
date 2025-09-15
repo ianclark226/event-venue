@@ -75,7 +75,7 @@ public class BookingController {
                 booking.getOrganizerEmail(),
                 booking.getNumOfAdults(),
                 booking.getNumOfChildren(),
-                booking.getNumOfTotalParticipates(), booking.getBookingConfirmationCode(), venue);
+                booking.getTotalNumOfParticipates(), booking.getBookingConfirmationCode(), venue);
     }
 
     @PostMapping("/venue/{venueId}/booking")
