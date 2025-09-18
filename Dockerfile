@@ -1,8 +1,18 @@
-FROM maven:3.8.5-openjdk-17 AS build
-COPY . .
-RUN mvn clean package -DskipTests
+FROM openjdk:17
+WORKDIR /app
 
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/event-venue-0.0.1-SNAPSHOT.jar event-venue.jar
-EXPOSE 9192
-ENTRYPOINT ["java", "-jar", "event-venue.jar"]
+# Copy the JAR built on the host
+COPY target/event-venue-0.0.1-SNAPSHOT.jar /app/app.jar
+
+EXPOSE 8088
+
+# Default environment variables (can be overridden in docker-compose.yml)
+ENV DB_URL=jdbc:mysql://mysql:3306/event_venue_DB
+ENV DB_USER=root
+ENV DB_PASSWORD=rootpw
+
+CMD java -jar \
+    -Dspring.datasource.url=${DB_URL} \
+    -Dspring.datasource.username=${DB_USER} \
+    -Dspring.datasource.password=${DB_PASSWORD} \
+    app.jar

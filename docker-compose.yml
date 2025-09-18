@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ev-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: event_venue_DB
+    ports:
+      - "3307:3306"   # host:container (change 3307 if 3306 is already used locally)
+    networks:
+      - spring-demo
+
+  ev-api:
+    container_name: ev-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ev/ev:0.0.1
+    ports:
+      - "8088:8088"
+    networks:
+      - spring-demo
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/event_venue_DB
+      DB_USER: root
+      DB_PASSWORD: admin
+
+networks:
+  spring-demo:
+    driver: bridge
