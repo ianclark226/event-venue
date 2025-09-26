@@ -10,3 +10,7 @@ Apply → OK
 Rebuild your project
 
 3. Use the 17 Oracle OpenSDK java version and wait for indexing to complete.
+
+
+Rerun project locally with local values
+- grab from github previous commits
