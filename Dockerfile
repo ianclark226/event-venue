@@ -1,18 +1,13 @@
 FROM openjdk:17
 WORKDIR /app
 
-# Copy the JAR built on the host
 COPY target/event-venue-0.0.1-SNAPSHOT.jar /app/app.jar
 
-EXPOSE 8088
-
-# Default environment variables (can be overridden in docker-compose.yml)
-ENV DB_URL=jdbc:mysql://mysql:3306/event_venue_DB
-ENV DB_USER=root
-ENV DB_PASSWORD=rootpw
+EXPOSE 8080   # or whatever port you want; Railway’s $PORT might be mapped
 
 CMD java -jar \
-    -Dspring.datasource.url=${DB_URL} \
-    -Dspring.datasource.username=${DB_USER} \
-    -Dspring.datasource.password=${DB_PASSWORD} \
+    -Dspring.datasource.url=${SPRING_DATASOURCE_URL} \
+    -Dspring.datasource.username=${SPRING_DATASOURCE_USERNAME} \
+    -Dspring.datasource.password=${SPRING_DATASOURCE_PASSWORD} \
+    -Dserver.port=${PORT:8080} \
     app.jar
