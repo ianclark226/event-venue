@@ -1,1 +1,1 @@
-web: java -jar app.jar
+web: java -jar target/event-venue-0.0.1-SNAPSHOT.jar
