@@ -8,6 +8,8 @@ COPY .mvn .mvn
 COPY mvnw .
 COPY mvnw.cmd .
 
+RUN chmod +x mvnw
+
 RUN ./mvnw dependency:go-offline -B
 
 # Copy source code and build
