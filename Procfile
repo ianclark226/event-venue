@@ -1,1 +1,1 @@
-web: java -Xms128m -Xmx256m -jar target/event-venue-0.0.1-SNAPSHOT.jar
+web: java -Xms128m -Xmx256m -jar app.jar
